@@ -1,4 +1,4 @@
 /build
 /node_modules
 .env
-/will_delete_test_socket_folder
+/.vscode

@@ -3,8 +3,9 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import testCase from "./types/testCase.type";
-import { createCppFile } from "./utils/codeFIleManager/createFile";
-import { deleteCppFile } from "./utils/codeFIleManager/deleteFile";
+import { createCppFile } from "./utils/code_files/createFile";
+import { deleteCppFile } from "./utils/code_files/deleteFile";
+import { deleteObjFile } from "./utils/code_files/deleteFile";
 import cppCodeEvaluation from "./utils/cppCodeEvaluation";
 import { PORT } from "./Config/server.config";
 const app=express();
@@ -24,6 +25,7 @@ io.on("connection",(socket)=>{
         await createCppFile(code);
         await cppCodeEvaluation();
         await deleteCppFile();
+        await deleteObjFile();
        }
       });
 })

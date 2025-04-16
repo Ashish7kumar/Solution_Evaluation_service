@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 export async function createCppFile(code: string): Promise<void> {
-  const directory = path.join(__dirname, "Code");
+  const directory = path.join(__dirname, "code");
   const filePath = path.join(directory, "main.cpp");
   
 
