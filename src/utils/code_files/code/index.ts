@@ -1,1 +1,1 @@
-console.log("hi");
+console.log("Just a Random File so on build code folder code folder gets generated");
