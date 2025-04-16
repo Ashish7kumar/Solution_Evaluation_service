@@ -26,7 +26,9 @@ export default async function runCppTestCases(testCases: testCase[]) {
 
     const result: any = await new Promise((resolve) => {
       exec(runTestCase, (err, stdout, stderr) => {
+        fs.unlinkSync(testPath);
         if (err) {
+           
           if (stderr.includes("Terminated")) {
             return resolve({ success: false, error: "TLE", input: testCase.input });
           }
