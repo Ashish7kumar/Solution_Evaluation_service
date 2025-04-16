@@ -18,14 +18,14 @@ export async function deleteCppFile(): Promise<void> {
   });
 }
 export async function deleteObjFile(): Promise<void> {
-  const objPAth = path.join(__dirname,"code", "main.o");
+  const objPAth = path.join(__dirname,"code", "main");
   return new Promise((resolve, reject) => {
     fs.unlink(objPAth, (err) => {
       if (err) {
-        console.log("Error occurred while deleting file");
+        console.log("Error occurred while deleting obj file");
         return reject(err);
       } else {
-        console.log("File deleted successfully");
+        console.log("obj file deleted successfully");
         return resolve();
       }
     });

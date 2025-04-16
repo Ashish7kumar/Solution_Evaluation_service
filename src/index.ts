@@ -7,6 +7,7 @@ import { createCppFile } from "./utils/code_files/createFile";
 import { deleteCppFile } from "./utils/code_files/deleteFile";
 import { deleteObjFile } from "./utils/code_files/deleteFile";
 import cppCodeEvaluation from "./utils/cppCodeEvaluation";
+import runCppTestCases from "./utils/runCppTestCases";
 import { PORT } from "./Config/server.config";
 const app=express();
 app.use(cors());
@@ -23,7 +24,16 @@ io.on("connection",(socket)=>{
        if(params.language=="C++")
        {
         await createCppFile(code);
-        await cppCodeEvaluation();
+        await cppCodeEvaluation(testCases);
+        const result=await runCppTestCases(testCases);
+      if(result.sucess==false)
+      {
+        console.log("Test case failed:", result); 
+      }
+      else{
+        console.log("All test cases passed successfully.");
+     
+      }
         await deleteCppFile();
         await deleteObjFile();
        }
