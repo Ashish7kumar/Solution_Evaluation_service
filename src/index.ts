@@ -17,8 +17,9 @@ const io=new Server(httpServer, {cors: {
     methods: ["GET", "POST"]
   }});
 io.on("connection",(socket)=>{
+  try{
      console.log("New socket connection Happened Ashish");
-     const params=socket.handshake.query as {language?:string};
+     const params=socket.handshake.query as {language:string};
      console.log(params.language);
      socket.on("evaluate", async ({ code, testCases }: { code: string; testCases: testCase[] }) => {
        if(params.language=="C++")
@@ -26,18 +27,25 @@ io.on("connection",(socket)=>{
         await createCppFile(code);
         await cppCodeEvaluation(testCases);
         const result=await runCppTestCases(testCases);
-      if(result.sucess==false)
+      if(result.success==false)
       {
         console.log("Test case failed:", result); 
+        socket.emit("testCaseResult", { success: false, error: result.error, input: result.input });
       }
       else{
         console.log("All test cases passed successfully.");
+        socket.emit("testCaseResult", { success: true, message: result.message });
      
       }
         await deleteCppFile();
         await deleteObjFile();
        }
+       socket.disconnect(true);
       });
+    }catch(err){
+      console.error("Error in socket connection:", err);
+    }
+    
 })
 
 httpServer.listen(PORT,()=>{

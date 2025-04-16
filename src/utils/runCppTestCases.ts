@@ -12,23 +12,17 @@ export default async function runCppTestCases(testCases: testCase[]) {
     const testPath = path.join(__dirname, "code_files", "code", "input.txt");
     fs.writeFileSync(testPath, testCase.input);
 
+    // SINGLE LINE Docker command (no multiline string)
+    const runTestCase = `docker run -i --rm -v "C:/Users/2 ashish/Desktop/Solution_Evaluation_service/build/utils/code_files/code:/code" -w /code gcc bash -c "timeout 2s ./main < input.txt"`;
 
-    const runTestCase = `
-      docker run --rm \
-      --cpus="0.5" \
-      --memory="100m" \
-      --network=none \
-      -v ${dockerPath}:/code \
-      -w /code gcc \
-      bash -c "timeout 2s ./main < input.txt"
-    `;
-;
+    
 
     const result: any = await new Promise((resolve) => {
+        
       exec(runTestCase, (err, stdout, stderr) => {
         fs.unlinkSync(testPath);
+       
         if (err) {
-           
           if (stderr.includes("Terminated")) {
             return resolve({ success: false, error: "TLE", input: testCase.input });
           }
@@ -42,8 +36,9 @@ export default async function runCppTestCases(testCases: testCase[]) {
 
         const actualOutput = stdout.trim();
         const expectedOutput = testCase.output.trim();
-
+ 
         if (actualOutput !== expectedOutput) {
+           
           return resolve({
             success: false,
             error: "Wrong Answer",
@@ -51,6 +46,7 @@ export default async function runCppTestCases(testCases: testCase[]) {
             expected: expectedOutput,
             actual: actualOutput,
           });
+          
         }
 
         resolve(null); 
@@ -58,14 +54,13 @@ export default async function runCppTestCases(testCases: testCase[]) {
     });
 
     if (result) {
+        
       return result; 
     }
-    try {
-      fs.unlinkSync(testPath);
-    } catch (err) {
-      console.warn("Could not delete input.txt:", err);
-    }
-  }
 
+    
+   
+  }
+ 
   return { success: true, message: "All test cases passed!" };
 }

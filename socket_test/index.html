@@ -34,11 +34,13 @@ int main() {
 }`,
   testCases: [
     { input: "1 2", output: "3" },
-    { input: "3 6", output: "9" }
+    { input: "3 6", output: "10" }
   ]
 });
-    }
-
+socket.on("testCaseResult", (result) => {
+  console.log("Test case result:", result);
+    });
+  }
   
   </script>
 </body>
