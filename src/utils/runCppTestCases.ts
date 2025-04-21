@@ -12,7 +12,7 @@ export default async function runCppTestCases(testCases: testCase[]) {
     const testPath = path.join(__dirname, "code_files", "code", "input.txt");
     fs.writeFileSync(testPath, testCase.input);
 
-    // SINGLE LINE Docker command (no multiline string)
+  
     const runTestCase = `docker run -i --rm -v "C:/Users/2 ashish/Desktop/Solution_Evaluation_service/build/utils/code_files/code:/code" -w /code gcc bash -c "timeout 2s ./main < input.txt"`;
 
     
