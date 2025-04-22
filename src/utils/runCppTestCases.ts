@@ -7,15 +7,16 @@ const dockerPath = path
   .join(__dirname, "code_files", "code")
   .replace(/\\/g, "/");
 
-export default async function runCppTestCases(testCases: testCase[]) {
+export default async function runCppTestCases(testCases: testCase[], language: string): Promise<any> {
   for (const testCase of testCases) {
     const testPath = path.join(__dirname, "code_files", "code", "input.txt");
     fs.writeFileSync(testPath, testCase.input);
 
-  
+  if(language==="cpp")
+  {
     const runTestCase = `docker run -i --rm -v "C:/Users/2 ashish/Desktop/Solution_Evaluation_service/build/utils/code_files/code:/code" -w /code gcc bash -c "timeout 2s ./main < input.txt"`;
 
-    
+  
 
     const result: any = await new Promise((resolve) => {
         
@@ -52,12 +53,13 @@ export default async function runCppTestCases(testCases: testCase[]) {
         resolve(null); 
       });
     });
+  
 
     if (result) {
         
       return result; 
     }
-
+  }
     
    
   }

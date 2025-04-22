@@ -5,7 +5,8 @@ import path from "path";
 import testCase from "../types/testCase.type";
 import runCppTestCases from "./runCppTestCases";
 
-export default async function cppCodeEvaluation(testCases:testCase[]): Promise<string> {
+export default async function cppCodeEvaluation(): Promise<string> {
+   // Assuming the code is in the first test case
   return new Promise((resolve, reject) => {
     const dockerPath = path
     .join(__dirname, "code_files", "code")
